@@ -1,5 +1,5 @@
 const express = require("express");
-const generateXiboFeed = require("./generateXiboFeed"); // Sem extensão .js
+const generateXiboFeed = require('./src/generateXiboFeed');// Sem extensão .js
 
 const app = express();
 const PORT = process.env.PORT || 3000;
