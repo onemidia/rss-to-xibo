@@ -1,0 +1,19 @@
+{
+    "name": "rss-to-xibo",
+    "version": "1.0.0",
+    "description": "Converte RSS XML para um formato de feed adequado para o Xibo",
+    "main": "generateXiboFeed.js",
+    "dependencies": {
+      "node-fetch": "^2.6.1",
+      "xml2js": "^0.4.23"
+    },
+    "scripts": {
+      "start": "node generateXiboFeed.js"
+    },
+    "engines": {
+      "node": "14.x"
+    },
+    "author": "",
+    "license": "ISC"
+  }
+  
