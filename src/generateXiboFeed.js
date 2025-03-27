@@ -23,18 +23,17 @@ const convertRssToXibo = async (rssUrl) => {
           link: 'https://www.tribunaonline.net/feed/',
           description: 'Últimas notícias do Tribuna Online',
           item: result.rss.channel[0].item.map(item => {
+            // Extrair a URL da imagem do description
             const description = item.description[0];
-            let imageLink = ''; // Variável para armazenar o link da imagem
-
-            // Lógica para identificar o link da imagem dentro da descrição
-            const imageMatch = description.match(/<img.*?src="(.*?)"/);
-            if (imageMatch && imageMatch[1]) {
-              imageLink = imageMatch[1]; // Extrair o link da imagem da descrição
-            }
+            const imageUrl = description.match(/<img.*?src=["'](.*?)["']/);
+            const linkfoto = imageUrl ? imageUrl[1] : ''; // Extrair a URL da imagem, caso exista
 
             return {
-              title: item.title[0], // Formatação para o título
-              linkfoto: imageLink || '', // Coloca o link da imagem na tag linkfoto
+              title: item.title[0],
+              link: item.link[0],
+              description: item.description[0].replace(/<img[^>]*>/g, ''), // Remover a imagem do description
+              pubDate: item.pubDate[0],
+              linkfoto: `[${linkfoto}|image]` // Formatando a imagem com a tag desejada
             };
           })
         }
