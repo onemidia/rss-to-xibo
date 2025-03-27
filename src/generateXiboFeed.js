@@ -1,12 +1,30 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 const fetch = require('node-fetch');
 const xml2js = require('xml2js');
+
+// Função para validar URLs
+const isValidUrl = (url) => {
+  try {
+    new URL(url);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
 
 // Função para obter e converter o RSS para o formato Xibo
 const convertRssToXibo = async (rssUrl) => {
   try {
+    // Verificar se a URL é válida
+    if (!isValidUrl(rssUrl)) {
+      throw new Error('URL inválida fornecida');
+    }
+
     // Buscar os dados do RSS
     const response = await fetch(rssUrl);
+    if (!response.ok) {
+      throw new Error(`Erro ao buscar RSS: ${response.statusText}`);
+    }
     const rssData = await response.text();
 
     // Converter o RSS para JSON de forma assíncrona
@@ -32,8 +50,13 @@ const convertRssToXibo = async (rssUrl) => {
       }
     });
 
-    // Salvar o XML em um arquivo local
-    fs.writeFileSync('xibo_feed.xml', xml);
+    // Validar o XML gerado
+    if (!xml) {
+      throw new Error('O XML gerado está vazio.');
+    }
+
+    // Salvar o XML de forma assíncrona
+    await fs.writeFile('xibo_feed.xml', xml);
     console.log('XML gerado com sucesso!');
 
     // Retornar o XML para uso na API
