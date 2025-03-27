@@ -4,8 +4,9 @@
     "description": "Converte RSS XML para um formato de feed adequado para o Xibo",
     "main": "generateXiboFeed.js",
     "dependencies": {
-      "node-fetch": "^2.6.1",
-      "xml2js": "^0.4.23"
+        "express": "^4.17.1",
+        "xml2js": "^0.4.23",
+        "node-fetch": "^2.6.1"
     },
     "scripts": {
       "start": "node server.js"
