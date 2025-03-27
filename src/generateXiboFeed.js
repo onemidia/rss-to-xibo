@@ -29,18 +29,12 @@ const convertRssToXibo = async (rssUrl) => {
             // Lógica para identificar o link da imagem dentro da descrição (exemplo de regex ou método específico)
             const imageMatch = description.match(/<img.*?src="(.*?)"/);
             if (imageMatch && imageMatch[1]) {
-              imageLink = imageMatch[1];
+              imageLink = imageMatch[1]; // Extrair o link da imagem da descrição
             }
 
             return {
               title: `<![CDATA[ ${item.title[0]} ]]>`, // Formatação para o título
-              description: `<![CDATA[ ${description} ]]>`, // Formatação para a descrição
-              copyright: `<![CDATA[ LUIS LIMA JR/FOTOARENA/ESTADÃO CONTEÚDO ]]>`, // Exemplo de copyright fixo, você pode mudar conforme necessário
-              date: `<![CDATA[ ${item.pubDate[0]} ]]>`, // Formatação da data
-              linkfoto: imageLink ? `<![CDATA[ ${imageLink} ]]>` : `<![CDATA[ ${description} ]]>`, // Substitui por link da imagem
-              qrcode: `<![CDATA[ http://rss.suatv.com.br/QRCode/view.php?link=aHR0cDovL2VudHJldGVuaW1lbnRvLnVvbC5jb20uYnIv ]]>`, // Exemplo de QR Code
-              logo1: `<![CDATA[ http://rss.suatv.com.br/Uol/img/logo1.png ]]>`, // Exemplo de logo1
-              logo2: `<![CDATA[ http://rss.suatv.com.br/Uol/img/logo2.png ]]>` // Exemplo de logo2
+              linkfoto: imageLink ? `<![CDATA[ ${imageLink} ]]>` : '', // Coloca o link da imagem na tag linkfoto
             };
           })
         }
