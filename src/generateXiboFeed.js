@@ -19,25 +19,23 @@ const convertRssToXibo = async (rssUrl) => {
       rss: {
         $: { version: '2.0' },
         channel: {
-          title: 'Tribuna Online',
+          title: '<![CDATA[Tribuna Online]]>',
           link: 'https://www.tribunaonline.net/feed/',
-          description: 'Últimas notícias do Tribuna Online',
+          description: '<![CDATA[Últimas notícias do Tribuna Online]]>',
           item: result.rss.channel[0].item.map(item => {
-            // Extrair a URL da imagem do description usando regex para pegar a URL da imagem
+            // Extrair a URL da imagem do description
             const description = item.description[0];
             const imageUrl = description.match(/<img.*?src=["'](.*?)["']/);
             const linkfoto = imageUrl ? imageUrl[1] : ''; // Extrair a URL da imagem, caso exista
 
-            // Criar a estrutura no formato que o Xibo espera
+            // Formatar o conteúdo para Xibo
             return {
-              title: `<![CDATA[ ${item.title[0]} ]]>`,
-              description: `<![CDATA[ ${description.replace(/<img[^>]*>/g, '')} ]]>`, // Remover a tag <img> da descrição
-              copyright: `<![CDATA[ ${item['dc:creator'] ? item['dc:creator'][0] : 'Fonte não informada'} ]]>`, // Usar dc:creator se disponível
-              date: `<![CDATA[ ${item.pubDate[0]} ]]>`,
-              linkfoto: `<![CDATA[ ${linkfoto} ]]>`, // Colocar a URL da imagem dentro de <linkfoto>
-              qrcode: `<![CDATA[ http://rss.suatv.com.br/QRCode/view.php?link=${Buffer.from(item.link[0]).toString('base64')} ]]>`, // Gerar um QR Code para o link
-              logo1: `<![CDATA[ http://rss.suatv.com.br/Uol/img/logo1.png ]]>`,
-              logo2: `<![CDATA[ http://rss.suatv.com.br/Uol/img/logo2.png ]]>`
+              title: `<![CDATA[${item.title[0]}]]>`,
+              link: item.link[0],
+              description: `<![CDATA[${item.description[0].replace(/<img[^>]*>/g, '')}]]>`, // Remover a imagem do description e incluir CDATA
+              pubDate: `<![CDATA[${item.pubDate[0]}]]>`,
+              // Formatar linkfoto dentro do layout HTML com CDATA
+              linkfoto: `<![CDATA[<div class="image">[linkfoto|image]<div class="cycle-overlay"><img alt="" src="${linkfoto}" style="width: 200px; height: 200px; margin-top: 200px;" /><p style="font-family: Arial, Verdana, sans-serif; font-size:60px; color:#ffffff;"><span style="color:#ffcc00;"><strong>[Title]</strong></span></p><p style="font-family: Arial, Verdana, sans-serif; font-size:50px; color:#ffffff;">[Description]</p></div></div>]]>`
             };
           })
         }
@@ -56,12 +54,5 @@ const convertRssToXibo = async (rssUrl) => {
   }
 };
 
-// Exemplo de uso
-convertRssToXibo('https://www.tribunaonline.net/feed/')
-  .then(xml => {
-    // Aqui você pode enviar o XML gerado para o Xibo ou salvar em algum lugar
-    console.log(xml);
-  })
-  .catch(error => {
-    console.error('Erro:', error);
-  });
+// Exportar a função para ser usada em outros arquivos
+module.exports = convertRssToXibo;
