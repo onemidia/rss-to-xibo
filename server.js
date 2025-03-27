@@ -1,20 +1,21 @@
-const express = require('express');
-const generateXiboFeed = require('./src/generateXiboFeed');
+const express = require("express");
+const generateXiboFeed = require("./generateXiboFeed"); // Sem extensão .js
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.get('/feed', async (req, res) => {
+app.get("/generate-feed", async (req, res) => {
     try {
-        const xmlFeed = await generateXiboFeed();
-        res.set('Content-Type', 'application/xml');
+        const rssData = {}; // Aqui você pega os dados do RSS
+        const xmlFeed = generateXiboFeed(rssData); // Chama a função corretamente
+        res.set("Content-Type", "application/xml");
         res.send(xmlFeed);
     } catch (error) {
         console.error("Erro ao gerar o XML:", error);
-        res.status(500).send('Erro ao gerar o feed XML');
+        res.status(500).send("Erro interno no servidor");
     }
 });
 
 app.listen(PORT, () => {
-    console.log(`✅ Servidor rodando em http://localhost:${PORT}`);
+    console.log(`Servidor rodando na porta ${PORT}`);
 });
