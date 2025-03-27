@@ -26,15 +26,15 @@ const convertRssToXibo = async (rssUrl) => {
             const description = item.description[0];
             let imageLink = ''; // Variável para armazenar o link da imagem
 
-            // Lógica para identificar o link da imagem dentro da descrição (exemplo de regex ou método específico)
+            // Lógica para identificar o link da imagem dentro da descrição
             const imageMatch = description.match(/<img.*?src="(.*?)"/);
             if (imageMatch && imageMatch[1]) {
               imageLink = imageMatch[1]; // Extrair o link da imagem da descrição
             }
 
             return {
-              title: `<![CDATA[ ${item.title[0]} ]]>`, // Formatação para o título
-              linkfoto: imageLink ? `<![CDATA[ ${imageLink} ]]>` : '', // Coloca o link da imagem na tag linkfoto
+              title: item.title[0], // Formatação para o título
+              linkfoto: imageLink || '', // Coloca o link da imagem na tag linkfoto
             };
           })
         }
