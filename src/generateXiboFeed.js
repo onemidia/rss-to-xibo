@@ -20,7 +20,7 @@ const convertRssToXibo = async (rssUrl) => {
         $: { version: '2.0' },
         channel: {
           title: 'Tribuna Online',
-          link: 'https://www.tribunaonline.net/',
+          link: 'https://www.tribunaonline.net/feed/',
           description: 'Últimas notícias do Tribuna Online',
           item: result.rss.channel[0].item.map(item => ({
             title: item.title[0],
