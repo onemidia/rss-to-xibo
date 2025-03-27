@@ -33,7 +33,8 @@ const convertRssToXibo = async (rssUrl) => {
               link: item.link[0],
               description: item.description[0].replace(/<img[^>]*>/g, ''), // Remover a imagem do description
               pubDate: item.pubDate[0],
-              linkfoto: `[${linkfoto}|image]` // Formatando a imagem com a tag desejada
+              // Formatar linkfoto dentro do layout HTML
+              linkfoto: `<div class="image">[linkfoto|image]<div class="cycle-overlay"><img alt="" src="${linkfoto}" style="width: 200px; height: 200px; margin-top: 200px;" /><p style="font-family: Arial, Verdana, sans-serif; font-size:60px; color:#ffffff;"><span style="color:#ffcc00;"><strong>[Title]</strong></span></p><p style="font-family: Arial, Verdana, sans-serif; font-size:50px; color:#ffffff;">[Description]</p></div></div>`
             };
           })
         }
